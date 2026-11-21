@@ -1,0 +1,25 @@
+PHOTOS DU SITE CAMPUS MONDE
+===========================
+
+Les photos de ce dossier proviennent de Wikimedia Commons, sous licence libre
+(CC0, CC BY ou CC BY-SA). Auteurs et licences : src/photos.php, et page
+« Mentions légales » du site (section Crédits photos). Ne supprimez pas ces crédits.
+
+Copie automatique : console d'administration > Catalogue > Photos du site >
+« Copier les photos sur le serveur ».
+
+Remplacer une photo par la vôtre : déposez un JPG portant exactement le même nom
+(ex. accueil.jpg), 1600 px de large maximum, moins de 400 Ko, puis adaptez ou
+supprimez son crédit dans src/photos.php.
+
+Noms utilisés :
+  accueil, canada, france, belgique, maroc, conseiller, etudiant-ordinateur,
+  campus, aeroport, arrivee
+  inst-laval, inst-umontreal, inst-lorraine, inst-unistra, inst-ulb,
+  inst-uclouvain, inst-um5
+  ville-montreal, ville-quebec, ville-paris, ville-strasbourg, ville-nancy,
+  ville-bruxelles, ville-rabat
+Photos encore à fournir par Campus Monde (illustration en attendant) :
+  bureau.jpg, facade.jpg (votre bureau de Brazzaville), logement.jpg, remise-diplome.jpg
+
+Personnes reconnaissables : accord écrit obligatoire (des parents pour un mineur).

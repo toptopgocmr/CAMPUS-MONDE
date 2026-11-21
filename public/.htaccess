@@ -1,0 +1,13 @@
+# Campus Monde — Apache : tout ce qui n'est pas un fichier existant passe par index.php
+Options -Indexes
+DirectoryIndex index.php
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ index.php [L,QSA]
+</IfModule>
+<IfModule mod_php.c>
+  php_value upload_max_filesize 6M
+  php_value post_max_size 8M
+</IfModule>

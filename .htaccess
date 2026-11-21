@@ -1,0 +1,9 @@
+# Si l'hébergeur pointe sur la racine du projet (et non sur /public) :
+# on redirige tout vers /public et on bloque l'accès aux dossiers privés.
+Options -Indexes
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(src|storage|database)(/|$) - [F,L]
+  RewriteRule ^\.env - [F,L]
+  RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

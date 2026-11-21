@@ -1,0 +1,12 @@
+.env
+storage/documents/*
+!storage/documents/.gitkeep
+storage/.installed
+*.log
+.DS_Store
+storage/secret.key
+
+# Anciennes versions / sauvegardes de travail (ne pas publier)
+storage/*_v*.js
+storage/*_v*.html
+storage/_maj.zip

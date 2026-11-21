@@ -1,0 +1,6 @@
+.env
+storage/documents/*
+storage/.installed
+*.log
+LANCER-EN-LOCAL.bat
+storage/secret.key
