@@ -12,13 +12,13 @@
 <link rel="apple-touch-icon" href="/logo.jpg">
 <meta property="og:image" content="/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..600&family=Fraunces:ital,opsz,wght@1,9..144,400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300..700&family=Work+Sans:ital,wght@0,500..800;1,500..700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --royal:#1B3A8C; --royal-2:#244BAA; --royal-d:#132B6B; --ink:#0E1B3D; --ink-2:#2A3654; --muted:#5A6580;
-  --line:#DCE2EE; --line-2:#E9EDF5; --mist:#F1F4FA; --white:#FFFFFF; --orange:#E8691B; --orange-d:#C8540D; --orange-l:#FDEBDD;
+  --royal:#192F73; --royal-2:#24408F; --royal-d:#11225A; --ink:#19232B; --ink-2:#30384A; --muted:#6B7385;
+  --line:#DEE2E6; --line-2:#E9EEF7; --mist:#F5FAFF; --white:#FFFFFF; --orange:#FC5F44; --orange-d:#E04A30; --orange-l:#FFE9E4;
   --ok:#1E7B4A; --warn:#A35F00; --err:#B3261E; --r:10px;
-  --fd:'Bricolage Grotesque',system-ui,sans-serif; --fs:'Fraunces',Georgia,'Times New Roman',serif; --fb:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --fd:'Work Sans',system-ui,sans-serif; --fs:'Work Sans',system-ui,sans-serif; --fb:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
   /* compat (espaces) */ --blue:var(--royal); --blue-2:var(--royal-2); --blue-3:var(--royal-2); --sky:#E7EDFA; --bg:var(--mist); --orange-d2:var(--orange-d);
 }
 *{box-sizing:border-box}
@@ -1301,6 +1301,71 @@ footer ul a:hover{gap:8px}footer ul a:hover::before{width:10px}
 @media (max-width:700px){.rc-head,.rc-foot{flex-direction:column}.rc-title{text-align:left}.rc-band,.rc-grid{grid-template-columns:1fr}}
 @media print{@page{size:A4;margin:10mm}html,body.printing{background:#fff!important}.rcpt{font-size:8.6pt}.rcpt *{-webkit-print-color-adjust:exact;print-color-adjust:exact}body.printing .modal.wide{max-width:none;width:auto;overflow:visible;border-radius:0}.rcpt th,.rcpt td{padding:3px 6px}.rcpt h4{margin:10px 0 5px}.rc-head{padding-bottom:8px}.rc-brand img{width:58px;height:58px}.rc-band{margin:10px 0 2px;padding:8px 12px}.rc-grid{gap:14px}.rc-foot{margin-top:10px;padding-top:10px;break-inside:avoid}.rc-qr svg{width:110px;height:110px}.rc-note{margin-top:8px}}
 @media print{header,footer,.topbar,.no-print,.wa-float{display:none!important}body.printing>*:not(#modal){display:none!important}body.printing #modal{position:static;display:block;background:none;padding:0}body.printing .modal{box-shadow:none;max-height:none;padding:0}}
+
+/* ===== Thème inspiré de cif-pro.com : marine #192F73, orange #FC5F44, police Sora ===== */
+body{font-size:15px;color:var(--ink-2)}
+h1,h2,h3,h4{letter-spacing:-.01em}
+/* Boutons en pilule */
+.btn{border-radius:999px;font-weight:600;font-size:.9rem;padding:.72em 1.4em}
+.btn-sm{padding:.5em 1.05em;font-size:.8rem}
+/* Bandeau du haut : bloc orange à gauche, coordonnées sur fond blanc */
+.topbar{background:#fff;color:var(--ink-2);border-bottom:1px solid var(--line-2);font-size:.78rem;white-space:nowrap}
+.topbar .wrap{height:44px;padding-left:0}
+#tb-l{background:var(--orange);color:#fff;align-self:stretch;padding:0 22px 0 24px;border-radius:0 0 18px 0;font-weight:600}
+.topbar a{color:var(--ink-2)} .topbar a:hover{color:var(--orange)}
+.tb-r a{display:inline-flex;align-items:center;gap:6px;padding-left:16px;border-left:1px solid var(--line)}
+.tb-r a::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--orange)}
+/* Barre de navigation marine */
+header.top{background:var(--royal);border-bottom:0}
+header.top.scrolled{box-shadow:0 6px 22px rgba(25,47,115,.28)}
+.nav{height:82px}
+.logo-img{height:52px;background:#fff;border-radius:12px;padding:4px 8px}
+.slogan{color:#C9D3F0;border-left-color:rgba(255,255,255,.25)}
+header.top .menu>a,header.top .mm-top,header.top .mm-link{color:#fff;font-weight:500;font-size:.86rem}
+header.top .menu>a:hover,header.top .mm-top:hover,header.top .mm-item.open>.mm-top,header.top .mm-link:hover,header.top .mm-item.on>.mm-top,header.top .menu>a.on{color:#FFD2C9}
+header.top .mm-item.on>.mm-top::after,header.top .mm-link.on::after,header.top .menu>a.on::after{background:var(--orange);height:3px}
+header.top .mm-panel .mm-top,header.top .mm-panel a{color:var(--ink-2)}
+header.top .icon-btn{background:var(--orange);border-color:var(--orange);color:#fff;border-radius:50%}
+header.top .icon-btn:hover{background:var(--orange-d);border-color:var(--orange-d);color:#fff}
+header.top .lang{border-color:rgba(255,255,255,.3);border-radius:999px}
+header.top .lang button{color:#C9D3F0}
+header.top .lang button.on{background:#fff;color:var(--royal)}
+header.top .btn-g{background:#fff;color:var(--royal);border-color:#fff;border-radius:22px 22px 22px 4px}
+header.top .btn-g:hover{background:#FFE9E4;color:var(--royal)}
+header.top .btn-o{border-radius:22px 22px 4px 22px}
+header.top .burger{color:#fff;border-color:rgba(255,255,255,.35)}
+/* Bandeau de titre de page marine */
+.page-h{background:var(--royal)!important;border-bottom:0;padding:44px 0 46px;color:#fff}
+.page-h h1{color:#fff;font-size:clamp(1.7rem,3.2vw,2.4rem)}
+.page-h h1 em{color:#FFB3A5!important}
+.page-h .lead,.page-h p{color:#D5DCF2}
+.crumb,.crumb a{color:#B9C4E6} .crumb a:hover{color:#fff}
+/* Titres de section : double tiret orange */
+.sec-h h2::after,.head-row h2::after,.card>h3:first-child::after,.office h3::after,.agenda h3::after,.side .who b::after{content:"";display:block;width:38px;height:3px;margin-top:10px;background:linear-gradient(90deg,var(--orange) 0 20px,transparent 20px 26px,var(--orange) 26px)}
+.side .who b::after{width:30px;margin-top:6px}
+.kick{color:var(--orange);text-transform:uppercase;letter-spacing:.06em;font-size:.74rem}
+/* Cartes latérales bleu très clair, carte de formulaire arrondie */
+.card,.side{background:var(--mist);border:1px solid var(--line-2);border-radius:16px}
+.block-ink,.office,.agenda{background:var(--royal)}
+.card table,.card .tbl-w{background:#fff}
+.form-card{border:1px solid #D9DEE6;border-radius:24px;padding:30px;box-shadow:0 2px 0 rgba(25,47,115,.04)}
+/* Champs compacts, libellés gris */
+label{font-weight:500;font-size:.8rem;color:#7A8194}
+input,select,textarea{border:1px solid var(--line);border-radius:5px;font-size:.84rem;padding:.7em .85em;color:#212529}
+input:focus,select:focus,textarea:focus{border-color:var(--royal);box-shadow:0 0 0 3px rgba(25,47,115,.1);outline:0}
+input::placeholder,textarea::placeholder{color:#8A93A6}
+/* Étapes du formulaire façon onglets (actif en orange) */
+.wiz{gap:0;border-bottom:1px solid var(--line);margin-bottom:18px}
+.wiz span{background:none;border-radius:10px 10px 0 0;padding:.75em 1.1em;font-size:.82rem;color:var(--muted);border:1px solid transparent;border-bottom:0;margin-bottom:-1px}
+.wiz span.on{background:#fff;color:var(--orange);border-color:var(--line);font-weight:700}
+.wiz span.done{background:none;color:var(--royal)}
+.prog>div{background:var(--orange)}
+/* Menu latéral de l’espace étudiant / admin */
+.side button.on,.side button:hover{background:#fff;color:var(--royal);box-shadow:inset 3px 0 0 var(--orange)}
+.side button.on .i{color:var(--orange)}
+.tag{border-radius:999px}
+/* Pied de page marine */
+footer{background:var(--royal)}
 </style>
 </head>
 <body>
