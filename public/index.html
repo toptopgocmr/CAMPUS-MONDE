@@ -1324,6 +1324,8 @@ header.top.scrolled{box-shadow:0 6px 22px rgba(25,47,115,.28)}
 header.top .menu>a,header.top .mm-top,header.top .mm-link{color:#fff;font-weight:500;font-size:.86rem}
 header.top .menu>a:hover,header.top .mm-top:hover,header.top .mm-item.open>.mm-top,header.top .mm-link:hover,header.top .mm-item.on>.mm-top,header.top .menu>a.on{color:#FFD2C9}
 header.top .mm-item.on>.mm-top::after,header.top .mm-link.on::after,header.top .menu>a.on::after{background:var(--orange);height:3px}
+/* Menu déroulant (écrans < 1380px) : fond blanc, donc textes foncés pour rester lisibles */
+@media(max-width:1380px){header.top .menu>a,header.top .mm-top,header.top .mm-link{color:var(--ink);font-weight:600;font-size:1rem}header.top .menu>a:hover,header.top .mm-top:hover,header.top .mm-item.open>.mm-top,header.top .mm-link:hover,header.top .mm-item.on>.mm-top,header.top .menu>a.on,header.top .mm-link.on{color:var(--royal)}header.top .mm-top .chev{opacity:.7}}
 header.top .mm-panel .mm-top,header.top .mm-panel a{color:var(--ink-2)}
 header.top .icon-btn{background:var(--orange);border-color:var(--orange);color:#fff;border-radius:50%}
 header.top .icon-btn:hover{background:var(--orange-d);border-color:var(--orange-d);color:#fff}
