@@ -10,3 +10,7 @@ storage/secret.key
 storage/*_v*.js
 storage/*_v*.html
 storage/_maj.zip
+
+# Fichiers temporaires et sauvegardes locales
+storage/_tmp_*
+public/*.avant-*

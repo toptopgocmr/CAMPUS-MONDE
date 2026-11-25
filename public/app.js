@@ -241,7 +241,7 @@ function chrome(){
    <div><h4>${L('Préparer son départ','Getting ready')}</h4><ul>${(typeof GUIDES!=='undefined'?GUIDES:[]).map(g=>`<li><a href="#guide-${g.id}">${L(g.fr,g.en)}</a></li>`).join('')}</ul></div>
    <div><h4>Campus Monde</h4><ul><li><a href="#apropos">${L('Qui sommes-nous','About us')}</a></li><li><a href="#services">${L('Nos services','Our services')}</a></li><li><a href="#actualites">${L('Actualités','News')}</a></li><li><a href="#faq">${L('Questions fréquentes','FAQ')}</a></li><li><a href="#espace">${L('Espace étudiant','Student area')}</a></li><li><a href="#admin">${L('Accès personnel','Staff access')}</a></li></ul></div>
    <div><h4>${L('Nous trouver','Find us')}</h4><ul class="foot-contact"><li>${ic('pin',16)}<span>211, avenue de la Base, Batignolles, arrêt Bopaka, Brazzaville, Congo</span></li><li>${ic('phone',16)}<span>+242 06 683 83 55<br>+242 05 350 50 12</span></li><li>${ic('mail',16)}<span>Billenium.corp@gmail.com</span></li><li>${ic('whatsapp',16)}<a href="${WA}" target="_blank" rel="noopener">${L('Écrire sur WhatsApp','Message on WhatsApp')}</a></li></ul></div>
-  </div><div class="foot-b"><span>© ${new Date().getFullYear()} Campus Monde, Billenium Conciergerie</span><span class="foot-legal"><a href="#legal">${L('Mentions légales','Legal notice')}</a><a href="#legal">${L('Confidentialité','Privacy')}</a><a href="#legal">Cookies</a><a href="#legal">${L('Conditions d’utilisation','Terms of use')}</a></span></div></div>`;
+  </div><div class="foot-map"><div><h4>${L('Nos destinations dans le monde','Our destinations worldwide')}</h4><p>${L('Depuis Brazzaville, nous accompagnons les étudiants vers les universités d’Europe, des Amériques, d’Afrique, d’Asie et d’Océanie.','From Brazzaville, we support students towards universities in Europe, the Americas, Africa, Asia and Oceania.')}</p><div class="fm-n"><div><b>${COUNTRIES.length}</b><span>${L('pays','countries')}</span></div><div><b>${((typeof S!=='undefined'&&S.institutions)||[]).length||'—'}</b><span>${L('établissements','institutions')}</span></div></div></div>${worldMap()}</div><div class="foot-b"><span>© ${new Date().getFullYear()} Campus Monde, Billenium Conciergerie</span><span class="foot-legal"><a href="#legal">${L('Mentions légales','Legal notice')}</a><a href="#legal">${L('Confidentialité','Privacy')}</a><a href="#legal">Cookies</a><a href="#legal">${L('Conditions d’utilisation','Terms of use')}</a></span></div></div>`;
 }
 function render(){
   route=(location.hash||'#accueil').slice(1)||'accueil';
@@ -408,6 +408,18 @@ function vNews(){
    <aside class="agenda"><h3>${L('Agenda','Events')}</h3><ul>${AGENDA.map(a=>`<li>${ic('calendar',18)}<div><strong>${L(a[0],a[1])}</strong><span>${L('Date à annoncer, au bureau de Brazzaville','Date to be announced, at the Brazzaville office')}</span></div></li>`).join('')}</ul><a class="btn btn-ghost-w btn-sm" href="#contact">${L('Être prévenu des prochaines dates','Get notified of next dates')}</a></aside></div></section>`;
 }
 
+const WMAP={W:1000,H:470,bzv:[529.4,240.8],pts:{canada:[275.5,98.6,-34,-30],'etats-unis':[274.3,112.3,-44,26],'royaume-uni':[485.3,81.4,-40,-30],france:[492.4,89,-58,6],belgique:[498.1,83.3,6,-44],suisse:[503.3,96.6],allemagne:[510.5,85.4],espagne:[475.1,113.1],italie:[521.4,108.9],russie:[593.2,69.3,30,-24],turquie:[568.5,111.4,38,-14],maroc:[466.2,131.4,-52,10],tunisie:[514.8,123.4,22,24],senegal:[435.9,186.6,-46,8],'cote-ivoire':[474.2,213.3,-30,30],'afrique-du-sud':[565.9,303.4,40,22],emirats:[643.6,156.6,38,14],chine:[818.3,114.6,-14,-34],'coree-du-sud':[848.5,121.2,38,-16],malaisie:[776.3,219.6,-12,34],australie:[917.7,325.3,32,22]}};
+function worldMap(){
+  const [bx,by]=WMAP.bzv;let arcs='',dots='',labs='';
+  COUNTRIES.forEach(c=>{const p=WMAP.pts[c.id];if(!p)return;const [x,y,dx,dy]=p;
+    const mx=(bx+x)/2,my=Math.min(by,y)-Math.abs(bx-x)*.18-30;
+    arcs+=`<path class="wm-arc" d="M${bx} ${by}Q${mx.toFixed(0)} ${my.toFixed(0)} ${x} ${y}"/>`;
+    if(dx!==undefined){const ex=x+dx,ey=y+dy,dir=dx<0?-1:1,tx=ex+dir*14;
+      labs+=`<a href="#pays-${c.id}" class="wm-l"><path d="M${x} ${y}L${ex} ${ey}H${ex+dir*10}"/><text x="${tx}" y="${ey+4}" text-anchor="${dir<0?'end':'start'}">${esc(c.city)}</text></a>`}
+    dots+=`<a href="#pays-${c.id}" class="wm-d"><title>${esc(c.city)}, ${esc(N(c))}</title><circle cx="${x}" cy="${y}" r="5.5"/></a>`;
+  });
+  return `<svg class="wmap" viewBox="0 0 ${WMAP.W} ${WMAP.H}" role="img" aria-label="${L('Carte de nos destinations d’études dans le monde, au départ de Brazzaville','Map of our study destinations worldwide, from Brazzaville')}"><image href="/world-land.svg" width="${WMAP.W}" height="${WMAP.H}"/><g class="wm-arcs">${arcs}</g>${labs}${dots}<g class="wm-home"><circle cx="${bx}" cy="${by}" r="16" class="ring"/><circle cx="${bx}" cy="${by}" r="7.5" class="core"/><path d="M${bx} ${by}L${bx-34} ${by+34}H${bx-46}"/><text x="${bx-52}" y="${by+38}" text-anchor="end">Brazzaville</text></g></svg>`;
+}
 function routeMap(){
   const B={x:454,y:354};
   const grid=[];for(let i=0;i<=13;i++)grid.push(`<path d="M${(i*43.08).toFixed(1)} 0V440"/>`);for(let j=0;j<=8;j++)grid.push(`<path d="M0 ${j*55}H560"/>`);
