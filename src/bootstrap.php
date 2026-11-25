@@ -164,10 +164,35 @@ function mail_to(string $to, string $subj, string $body, ?string $secret = null)
     q('insert into outbox(at,to_email,subj,body) values(?,?,?,?)', [now_db(), $to, $subj, $stored]);
     $id = (int)db()->lastInsertId();
     $text = $body . "\n\n— Campus Monde" . (env('APP_URL') ? "\n" . env('APP_URL') : '');
-    if (env('SMTP_HOST')) {
+    // Railway (offres Free/Trial/Hobby) bloque le SMTP sortant : on passe d'abord par une API e-mail en HTTPS (Brevo ou Resend).
+    if (env('BREVO_API_KEY') || env('RESEND_API_KEY')) {
+        try { api_mail_send($to, $subj, $text); q('update outbox set sent=1 where id=?', [$id]); }
+        catch (Throwable $e) { logline('[mail API] échec : ' . $e->getMessage()); }
+    } elseif (env('SMTP_HOST')) {
         try { smtp_send($to, $subj, $text); q('update outbox set sent=1 where id=?', [$id]); }
         catch (Throwable $e) { logline('[mail] échec : ' . $e->getMessage()); }
-    } else logline("[mail – SMTP non configuré] → $to | $subj | $body");
+    } else logline("[mail – aucun envoi configuré] → $to | $subj | $body");
+}
+// Envoi par API HTTPS (port 443, autorisé partout) — Brevo en priorité, sinon Resend.
+function api_mail_send(string $to, string $subj, string $text): void {
+    $from = env('MAIL_FROM', 'Campus Monde <no-reply@localhost>');
+    $fromName = 'Campus Monde'; $fromAddr = $from;
+    if (preg_match('/^(.*)<([^>]+)>$/', trim($from), $fm)) { $fromName = trim(trim($fm[1]), '"') ?: 'Campus Monde'; $fromAddr = trim($fm[2]); }
+    if ($key = trim((string)env('BREVO_API_KEY'))) {
+        // Brevo affiche parfois la clé encodée (base64 de {"api_key":"xkeysib-..."}) : on accepte les deux formats.
+        if (strpos($key, 'xkeysib-') !== 0 && ($j = json_decode((string)base64_decode($key, true), true)) && !empty($j['api_key'])) $key = $j['api_key'];
+        $url = 'https://api.brevo.com/v3/smtp/email';
+        $hdr = ['api-key: ' . $key, 'Content-Type: application/json', 'Accept: application/json'];
+        $payload = ['sender' => ['name' => $fromName, 'email' => $fromAddr], 'to' => [['email' => $to]], 'subject' => $subj, 'textContent' => $text];
+    } else {
+        $url = 'https://api.resend.com/emails';
+        $hdr = ['Authorization: Bearer ' . env('RESEND_API_KEY'), 'Content-Type: application/json'];
+        $payload = ['from' => "$fromName <$fromAddr>", 'to' => [$to], 'subject' => $subj, 'text' => $text];
+    }
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [CURLOPT_POST => true, CURLOPT_HTTPHEADER => $hdr, CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE), CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 20]);
+    $res = curl_exec($ch); $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE); $err = curl_error($ch); curl_close($ch);
+    if ($res === false || $code < 200 || $code >= 300) throw new RuntimeException("HTTP $code " . ($err ?: substr((string)$res, 0, 300)));
 }
 
 /* ---------- Installation automatique (tables, catalogue, comptes) ---------- */

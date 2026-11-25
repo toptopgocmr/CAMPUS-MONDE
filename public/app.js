@@ -272,7 +272,7 @@ function showDevCode(){
   }
 }
 function rerender(){const y=scrollY;render();scrollTo(0,y)}
-window.addEventListener('hashchange',()=>{ui={...ui,msg:null};render();scrollTo(0,0)});
+window.addEventListener('hashchange',()=>{ui={...ui,msg:ui.keepMsg?ui.msg:null,keepMsg:0};render();scrollTo(0,0)});
 window.addEventListener('scroll',()=>{const h=document.querySelector('header.top');if(h)h.classList.toggle('scrolled',scrollY>8)},{passive:true});
 function pageH(title,sub,crumb,img){return `<section class="page-h"><div class="wrap${img?' ph-grid':''}"><div>${crumb?`<nav class="crumb" aria-label="${L('Fil d’Ariane','Breadcrumb')}"><a href="#accueil">${L('Accueil','Home')}</a><span>/</span>${crumb}</nav>`:''}<h1>${title}</h1>${sub?`<p class="lead">${sub}</p>`:''}</div>${img?`<div class="ph-art">${ph(img)}</div>`:''}</div></section>`}
 
@@ -773,9 +773,12 @@ async function run(fn,ok){
 }
 async function newApp(progId){
   const u=ME();
-  if(!u||u.role!=='candidat'){ui.auth='register';ui.msg={t:'info',m:L('Créez un compte ou connectez-vous pour candidater.','Create an account or log in to apply.')};ui.pendingProg=progId||null;go('espace');return}
-  try{const r=await api('POST','/api/apps',{prog:progId||null});await load();ui.ctab='app';ui.appId=r.id;ui.wstep=1;ui.msg=null;if(route!=='espace')go('espace');else rerender()}
-  catch(e){ui.msg={t:'err',m:e.message};rerender()}
+  if(u&&u.role!=='candidat'){toast(L('Vous êtes connecté avec un compte du back-office. Déconnectez-vous puis utilisez un compte candidat pour candidater.','You are logged in with a back-office account. Log out and use an applicant account to apply.'));return}
+  if(!u){ui.auth='register';ui.msg={t:'info',m:L('Créez un compte ou connectez-vous pour candidater.','Create an account or log in to apply.')};ui.pendingProg=progId||null;ui.keepMsg=1;go('espace');scrollTo(0,0);return}
+  // Compte non vérifié : on garde la formation choisie et on renvoie vers l'écran de vérification du code
+  if(!u.verified){ui.pendingProg=progId||null;ui.msg={t:'info',m:L('Vérifiez d\'abord votre adresse e-mail avec le code reçu, puis votre candidature à cette formation sera créée.','Please verify your email with the code you received first; your application to this programme will then be created.')};go('espace');scrollTo(0,0);return}
+  try{const r=await api('POST','/api/apps',{prog:progId||null});await load();ui.ctab='app';ui.appId=r.id;ui.wstep=1;ui.msg=null;if(route!=='espace')go('espace');else rerender();scrollTo(0,0)}
+  catch(e){ui.msg={t:'err',m:e.message};toast(e.message);if(route!=='espace'){ui.keepMsg=1;go('espace')}else rerender()}
 }
 /* Contrôle des champs obligatoires d'un formulaire : signale chaque champ vide et bloque l'étape suivante */
 /* ---------- Paiement des frais de dossier ---------- */
